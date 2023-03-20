@@ -5,6 +5,7 @@ import { useState } from "react"
 
 export default function Recording() {
  const mediaStreamRef = useRef(null)
+ const videoPlayerRef = useRef(null)
  const [errorMessage, setErrorMessage] = useState('')
 
 useEffect(() => {
@@ -12,6 +13,7 @@ useEffect(() => {
    try{
     const mediaStream = await navigator.mediaDevices.getUserMedia({video: true, audio: true })
     mediaStreamRef.current = mediaStream
+    videoPlayerRef.current.srcObject = mediaStream
  }catch(error){
   setErrorMessage("Please grant permission to use your camera and microphone")
   }
@@ -26,6 +28,7 @@ useEffect(() => {
      Recording page
    </h1>
    {errorMessage && <p>{errorMessage}</p>}
+   <video ref={videoPlayerRef} autoPlay muted style={{ width: '500px', height: 'auto' }} ></video>
   </>
  )
 }
